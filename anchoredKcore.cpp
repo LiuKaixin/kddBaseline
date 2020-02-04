@@ -1004,7 +1004,7 @@ void dataOutput()
         for (int i = 0; i < followers_times.size(); ++i) {
             pair<int ,double> item=followers_times[i];
             fsch = putc('\t', fs);
-            sprintf(record, "b:%d", i*100);
+            sprintf(record, "b:%d", (i+1)*100);
             fwrite(record, sizeof(*record), strlen(record), fs);
             fsch = putc('\t', fs);
             sprintf(record, "f:%d", item.first);
