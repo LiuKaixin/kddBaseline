@@ -428,13 +428,22 @@ void constrcutKm1SubsV6() //km1Tag, km1Degree, km1ShellTag, km1Nei, km1ShellDown
         km1ShellUpLayerNei[id]=temp;
     }
     km1UpLayerNodes.clear();
-    //km1ShellUpLayerNei=emptyList;
 	//build km1ShellLayerRecord, km1ShellLayerCand; 
 	for (unsigned long i = 0; i < layerNum; i++)
 	{
 		km1ShellLayerRecord.push_back(0);
 		km1ShellLayerCand.push_back(temp);
 	}
+	//km1ShellUpLayerNei=emptyList;
+    long long whole_size=0,whole_size2=0,whole_size3=0;
+    for (int i = 0; i < km1ShellUpLayerNei.size(); ++i) {
+        whole_size+=km1ShellUpLayerNei[i].size();
+        whole_size2+=km1ShellDownLayerNei[i].size();
+        whole_size3+=km1ShellOneLayerNei[i].size();
+    }
+    cout<<"km1ShellUpLayerNei\t"<< whole_size<<endl;
+    cout<<"km1ShellDownLayerNei\t"<< whole_size2<<endl;
+    cout<<"km1ShellOneLayerNei\t"<< whole_size3<<endl;
 	for (unsigned long i = 0; i < setTagIDs.size(); i++)
 	{
 		long setTagID = setTagIDs[i];
@@ -463,6 +472,11 @@ void constrcutKm1SubsV6() //km1Tag, km1Degree, km1ShellTag, km1Nei, km1ShellDown
 		km1ShellOneLayerNei[setTagID] = temp1;
 		km1ShellUpLayerNei[setTagID] = temp2;
 	}
+    whole_size=0;
+    for (int i = 0; i < km1ShellUpLayerNei.size(); ++i) {
+        whole_size+=km1ShellUpLayerNei[i].size();
+    }
+    cout<<"km1ShellUpLayerNei\t"<< whole_size<<endl;
 	//km1ShellCandidates = setTagIDs;
 
 	for (unsigned long i = 0; i < km1Neighbors.size(); i++)
@@ -528,6 +542,12 @@ void constrcutKm1SubsV6() //km1Tag, km1Degree, km1ShellTag, km1Nei, km1ShellDown
 		}
 		sort(km1ShellCandidates.begin(), km1ShellCandidates.end(), compareUB);
 	}
+
+    whole_size=0;
+    for (int i = 0; i < km1ShellUpLayerNei.size(); ++i) {
+        whole_size+=km1ShellUpLayerNei[i].size();
+    }
+    cout<<"km1ShellUpLayerNei\t"<< whole_size<<endl<<endl;
 }
 
 void backtrackingEarlyStopToComputeKcore(long ver, vector<long> &kcoreFailers)
@@ -1018,7 +1038,7 @@ void dataOutput()
             sprintf(record, "t:%lf", item.second);
             fwrite(record, sizeof(*record), strlen(record), fs);
         }
-        /*
+
 		for (unsigned long i = 0; i < anchorIDs.size(); i++)
 		{
 			long id = anchorIDs[i];
@@ -1035,7 +1055,7 @@ void dataOutput()
 				fwrite(record, sizeof(*record), strlen(record), fs);
 			}
 
-		}*/
+		}
 		fsch = putc('\n', fs);
 		fsch = putc('\n', fs);
 	}
@@ -1080,7 +1100,48 @@ int main(int argc, char *argv[])
 
 	//output data
 	dataOutput();
+    long long whole_size;
+    whole_size=0;
+    for (int i = 0; i < verSet.size(); ++i) {
+        whole_size+=verSet[i].size();
+    }
+    cout<<"verSet\t"<< whole_size<<endl;
 
+    whole_size=0;
+    for (int i = 0; i < km1Nei.size(); ++i) {
+        whole_size+=km1Nei[i].size();
+    }
+    cout<<"km1Nei\t"<< whole_size<<endl;
+
+    whole_size=0;
+    for (int i = 0; i < kmbNei.size(); ++i) {
+        whole_size+=kmbNei[i].size();
+    }
+    cout<<"kmbNei\t"<< whole_size<<endl;
+
+    whole_size=0;
+    for (int i = 0; i < km1ShellDownLayerNei.size(); ++i) {
+        whole_size+=km1ShellDownLayerNei[i].size();
+    }
+    cout<<"km1ShellDownLayerNei\t"<< whole_size<<endl;
+
+    whole_size=0;
+    for (int i = 0; i < km1ShellOneLayerNei.size(); ++i) {
+        whole_size+=km1ShellOneLayerNei[i].size();
+    }
+    cout<<"km1ShellOneLayerNei\t"<< whole_size<<endl;
+
+    whole_size=0;
+    for (int i = 0; i < km1ShellUpLayerNei.size(); ++i) {
+        whole_size+=km1ShellUpLayerNei[i].size();
+    }
+    cout<<"km1ShellUpLayerNei\t"<< whole_size<<endl;
+
+    whole_size=0;
+    for (int i = 0; i < km1ShellLayerCand.size(); ++i) {
+        whole_size+=km1ShellLayerCand[i].size();
+    }
+    cout<<"km1ShellLayerCand\t"<< whole_size<<endl;
 	return 0;
 
 }
