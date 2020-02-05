@@ -37,6 +37,7 @@ vector<long> km1Neighbors;
 vector<long> anchorIDs;
 vector<pair<int,double> > followers_times;
 vector<vector<long> > verSet, km1IdSubTag, km1Nei, kmbNei, km1ShellDownLayerNei, km1ShellOneLayerNei, km1ShellUpLayerNei, km1ShellLayerCand;
+vector<long> km1UpLayerNodes;
 bool compareUB(const long &a, const long &b)//sort comparison 
 {
 	return km1ShellUpperBounds[a] > km1ShellUpperBounds[b];
@@ -422,14 +423,18 @@ void constrcutKm1SubsV6() //km1Tag, km1Degree, km1ShellTag, km1Nei, km1ShellDown
 		km1ShellOneLayerNei[id] = temp;
 		km1ShellUpLayerNei[id] = temp;
 	}
-
+    for (int l = 0; l < km1UpLayerNodes.size(); ++l) {
+        long id=km1UpLayerNodes[l];
+        km1ShellUpLayerNei[id]=temp;
+    }
+    km1UpLayerNodes.clear();
+    //km1ShellUpLayerNei=emptyList;
 	//build km1ShellLayerRecord, km1ShellLayerCand; 
 	for (unsigned long i = 0; i < layerNum; i++)
 	{
 		km1ShellLayerRecord.push_back(0);
 		km1ShellLayerCand.push_back(temp);
 	}
-
 	for (unsigned long i = 0; i < setTagIDs.size(); i++)
 	{
 		long setTagID = setTagIDs[i];
@@ -458,7 +463,6 @@ void constrcutKm1SubsV6() //km1Tag, km1Degree, km1ShellTag, km1Nei, km1ShellDown
 		km1ShellOneLayerNei[setTagID] = temp1;
 		km1ShellUpLayerNei[setTagID] = temp2;
 	}
-
 	//km1ShellCandidates = setTagIDs;
 
 	for (unsigned long i = 0; i < km1Neighbors.size(); i++)
@@ -473,6 +477,7 @@ void constrcutKm1SubsV6() //km1Tag, km1Degree, km1ShellTag, km1Nei, km1ShellDown
 			{
 				temp.push_back(nei);
 				km1ShellUpLayerNei[nei].push_back(id);
+                km1UpLayerNodes.push_back(nei);
 			}
 		}
 		km1ShellDownLayerNei[id] = temp;
@@ -1013,7 +1018,7 @@ void dataOutput()
             sprintf(record, "t:%lf", item.second);
             fwrite(record, sizeof(*record), strlen(record), fs);
         }
-		/*
+        /*
 		for (unsigned long i = 0; i < anchorIDs.size(); i++)
 		{
 			long id = anchorIDs[i];
@@ -1075,6 +1080,7 @@ int main(int argc, char *argv[])
 
 	//output data
 	dataOutput();
+
 	return 0;
 
 }
